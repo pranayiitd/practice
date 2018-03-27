@@ -25,4 +25,9 @@ public class LRUCacheTest{
 
     assertEquals(2, cache.size());
   }  
+
+  @Test
+  public void testFake(){
+    System.out.println("run one test method");
+  }
 }
