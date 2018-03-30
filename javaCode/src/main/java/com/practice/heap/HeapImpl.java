@@ -1,6 +1,7 @@
+package com.practice.heap;
 import java.util.*;
 
-class heap{
+class HeapImpl{
 	static ArrayList<Integer> h = new ArrayList<Integer>();
 	
 	public static void insert(int v){

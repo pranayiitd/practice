@@ -1,5 +1,5 @@
 import java.util.*;
-
+/*
 class TrieNode{
     HashMap<Character, TrieNode> children;
     boolean isWord;
@@ -36,18 +36,15 @@ public class Trie {
     
     TrieNode root;
     
-    /** Initialize your data structure here. */
     public Trie() {
         Character c = new Character(' ');
         root = new TrieNode(c);
     }
     
-    /** Inserts a word into the trie. */
     public void insert(String word) {
         root.insert(word);
     }
     
-    /** Returns if the word is in the trie. */
     // NOTE: we can also follow the style of BTreeNode.java
     public boolean search(String word) {
         return search(root, word, false);  
@@ -68,11 +65,12 @@ public class Trie {
         return search(child, word.substring(1), isPrefixSearch);
     }
     
-    /** Returns if there is any word in the trie that starts with the given prefix. */
     public boolean startsWith(String prefix) {
         return search(root, prefix, true);
     }
 }
+
+*/
 
 /**
  * Your Trie object will be instantiated and called as such:

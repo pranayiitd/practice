@@ -1,3 +1,4 @@
+/*
 package com.practice.lruCache;
 
 import org.junit.Test;
@@ -31,3 +32,4 @@ public class LRUCacheTest{
     System.out.println("run one test method");
   }
 }
+*/
