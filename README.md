@@ -15,3 +15,6 @@ Unit Tests:
 mvn -q test -Dtest=classname
 # Run one class method
 mvn -q test -Dtest=LRUCacheTest#testFake
+
+Run one main class (Only after this is compiled)
+mvn -q exec:java -Dexec.mainClass="com.practice.warmup.JavaHashMap"
