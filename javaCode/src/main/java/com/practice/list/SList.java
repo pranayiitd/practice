@@ -79,6 +79,27 @@ class SList{
     return find(v, n.next);
   }
 
+  public void reverse() {
+    if(head == null || head == tail){
+      return;
+    }
+    tail = head;
+    reverse(null, head);
+  }
+
+  void reverse(ListNode curr, ListNode next){
+    ListNode tempNext = next.next;
+    next.next = curr;
+    if(tempNext == null){
+      head = next;
+      return;
+    }
+    reverse(next, tempNext);
+  }
+
+  /*
+  Utils method to print out list state
+  */
   public void print(){
     print(head);
     String headStr = (head == null ? "null" : head.value + "");

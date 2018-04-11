@@ -39,6 +39,18 @@ public class SListTest{
 
     slist.delete(10);
     slist.print();
+  }
 
+  @Test
+  public void testReverse(){
+    int [] arr = {1, 2, 10, 11, 13};
+
+    SList slist = new SList(0);
+    for(int i=0; i<arr.length; i++){
+      slist.insert(arr[i]);
+    }
+    slist.print();
+    slist.reverse();
+    slist.print();
   }
 }
