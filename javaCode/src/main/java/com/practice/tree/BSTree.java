@@ -1,170 +1,169 @@
-/*
-class Node{
-  int data;
-  Node left;
-  Node right;
-  int space;
+package com.practice.tree;
 
-  public Node(int data){
-    this.data = data;
-  }
-}
+import java.util.*;
+
 // Good source code to take a look
 // http://algs4.cs.princeton.edu/32bst/BST.java.html
-class BSTree{
-  Node root;
+public class BSTree{
+  BNode root;
+  int count;
 
-  public void insert(int v){
-    root = insert(root, v);
+  BSTree(int v){
+    root = new BNode(v);
+    count = 1;
   }
-  private Node insert(Node n, int v){
-    if(n == null)
-      return new Node(v);
-    if(v <= n.data){
-      n.left = insert(n.left, v);
+
+  public boolean insert(int v){
+    root = insert(root, v);
+    count++;
+    return true;
+  }
+
+  BNode insert(BNode node, int v){
+    if(node == null){
+      return new BNode(v);
+    }
+    if(v <= node.value){
+      node.left = insert(node.left, v);
     }
     else{
-     n.right = insert(n.right, v);
+      node.right = insert(node.right, v);
     }
-    return n;
-  }
-  // Iterative
-  public void insert_it(int v){
-    Node new_n = new Node(v);
-    if(root == null){
-      root = new_n;
-      return;
-    }
-    Node temp = root;
-    Node parent = null;
-    while(temp != null){
-      parent = temp;
-      if(v <= temp.data){
-        temp = temp.left;
-      }
-      else{
-        temp = temp.right;
-      }
-    }
-    if(v <= parent.data)
-      parent.left = new_n;
-    else
-      parent.right = new_n;
 
+    return node;
   }
 
-  public Node find(int v){
+  public boolean find(int v){
     return find(root, v);
   }
 
-  private Node find(Node n, int v){
-    if(n == null)
-      return null;
-    if(v < n.data)
-      return find(n.left, v);
-    if(v > n.data)
-      return find(n.right, v);
-    return n;
-  }
-
-  public Node find_it(int v){
-    if(root == null || root.data == v)
-      return root;
-    Node temp = root;
-    while(temp != null && temp.data != v){
-      if(v <= temp.data)
-        temp = temp.left;
-      else
-        temp = temp.right;
+  boolean find(BNode node, int v){
+    if(node == null){
+      return false;
     }
-    return temp;
+    if(node.value == v){
+      return true;
+    }
+    if(v > node.value){
+      return find(node.right, v);
+    }
+    return find(node.left, v);
   }
 
   public void delete(int v){
-   root = delete(root, v);
+    root = delete(root, v);
   }
 
-  private Node delete(Node n, int v){
-    if(n == null)
+  BNode delete(BNode n, int v){
+    if(n == null){
       return null;
-    if(v < n.data){
-      n.left = delete(n.left, v);
     }
-    else if(v > n.data){
+    if(v > n.value){
       n.right = delete(n.right, v);
     }
-    else{
-     if(n.left == null){
-      return n.right;
-     }
-     if(n.right == null){
-      return n.left;
-     }
-     // has 2 children
-     Node succ = findMin(n.right);
-     n.data = succ.data;
-     // Important to update the right child
-     n.right = delete(n.right, succ.data);
+    else if(v < n.value){
+      n.left = delete(n.left, v);
     }
-     return n;
+    else{
+      //We found the node to be deleted.
+      if(n.left == null){
+        return n.right;
+      }
+      if(n.right == null){
+        return n.left;
+      }
+      //Both children present.
+      BNode temp = n;
+
+      //updating node with it's succ
+      n = findMin(temp.right);
+
+      //Below call free up succ node with it's old parent
+      n.right = deleteMin(temp.right);
+      n.left = temp.left;
+    }
+    return n;
   }
 
-/**********************************
-  Utils methods
-/**********************************
-
-  
-  public Node findMin(Node n){
-    if(n == null || n.left == null)
+  //Make sure it's not called with null n
+  BNode findMin(BNode n){
+    if(n.left == null){
       return n;
+    }
     return findMin(n.left);
   }
+
+  //Make sure it's not called with null n
+  BNode deleteMin(BNode n){
+   if(n.left == null){
+    return n.right;
+   }
+   n.left = deleteMin(n.left);
+   return n;
+  }
+
   public void inorder(){
     inorder(root);
     System.out.println();
   }
 
-  private void inorder(Node n) {
-    if(n == null)
+  void inorder(BNode node){
+    if(node == null){
       return;
-    inorder(n.left);
-    System.out.print(n.data + ",");
-    inorder(n.right);
-  }
-
-  public void preorder(){
-    preorder(root);
-    System.out.println();
-  }
-
-  private void preorder(Node n){
-    if(n == null)
-      return;
-    System.out.print(n.data + ",");
-    preorder(n.left);
-    preorder(n.right);
-  }
-
-  public int getHeight(Node n){
-    if(n == null)
-      return -1;
-    int l = getHeight(n.left);
-    int r = getHeight(n.right);
-    return 1 + Math.max(l, r);
-  }
-
-  public static void main(String arg []){
-    BSTree bst = new BSTree();
-    int [] arr = {10 , 1 , 23, 11, -1, 0, 0, 1, 1, 1, 14, 12, 15, 25};
-    for(int i : arr){
-      bst.insert_it(i);
     }
-    // bst.preorder();
-    bst.inorder();
-    // Node n = bst.find_it(-1);
-    // bst.inorder(n);
-    bst.delete(23);
-    bst.inorder();
+    inorder(node.left);
+    System.out.printf(node.value + ", ");
+    inorder(node.right);
   }
+
+
+  /*
+  Some printing Utils, effort to print Tree like outpout.
+  */
+  public void print(){
+    HashMap<Integer, ArrayList<BNode>> treeMap = new HashMap<>();
+
+    print(treeMap, root, 0, 50);
+    for(Map.Entry<Integer, ArrayList<BNode>> entry : treeMap.entrySet()){
+      int depth = entry.getKey();
+      ArrayList<BNode> elems = entry.getValue();
+      String[] output = new String[100];
+      // System.out.printf("%s : %s\n", depth, elems);
+      for(BNode e : elems){
+        String l = (e.left == null) ? "" : e.left.value + "";
+        String r = (e.right == null) ? "" : e.right.value + "";
+
+        output[e.pos] = e.value + String.format("[%s, %s]", l, r);
+      }
+      System.out.println(printArr(output));
+    }
+  }
+
+  String printArr(String[] arr){
+    StringBuilder sb = new StringBuilder();
+    for(String o : arr){
+      if(o != null){
+        sb.append(o);
+      }
+      sb.append(" ");
+    }
+    return sb.toString();
+  }
+
+  void print(HashMap<Integer, ArrayList<BNode>> treeMap, BNode node, int depth, int weidth){
+    if(node == null){
+      return;
+    }
+    ArrayList<BNode> elems = treeMap.get(depth);
+    if(elems == null){
+      elems = new ArrayList<>();
+    }
+    node.pos = weidth;
+    elems.add(node);
+    treeMap.put(depth, elems);
+
+    print(treeMap, node.left, depth + 1, weidth - 10);
+    print(treeMap, node.right, depth + 1, weidth + 10);
+  }
+
 }
-*/
