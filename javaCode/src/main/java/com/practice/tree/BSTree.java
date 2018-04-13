@@ -8,6 +8,10 @@ public class BSTree{
   BNode root;
   int count;
 
+  BSTree(BNode r){
+    this.root = r;
+  }
+
   BSTree(int v){
     root = new BNode(v);
     count = 1;
@@ -33,6 +37,31 @@ public class BSTree{
     return node;
   }
 
+  public void insert_it(int v){
+    BNode newNode = new BNode(v);
+    if(root == null){
+      root = newNode;
+    }
+
+    BNode parent = null;
+    BNode curr = root;
+    while(curr != null){
+      parent = curr;
+      if(v > curr.value){
+        curr = curr.right;
+      }
+      else{
+        curr = curr.left;
+      }
+    }
+    if(v <= parent.value){
+      parent.left = newNode;
+    }
+    else{
+      parent.right = newNode;
+    }
+  }
+
   public boolean find(int v){
     return find(root, v);
   }
@@ -48,6 +77,22 @@ public class BSTree{
       return find(node.right, v);
     }
     return find(node.left, v);
+  }
+
+  public boolean find_it(int v){
+   BNode temp = root;
+   while(temp != null){
+    if(v > temp.value){
+      temp = temp.right;
+    }
+    else if(v < temp.value){
+      temp = temp.left;
+    }
+    else{
+     return true;
+    }
+   }
+   return false;
   }
 
   public void delete(int v){
