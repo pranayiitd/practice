@@ -1,11 +1,8 @@
+package com.practice.graph;
+
 import java.util.*;
 import java.io.*;
-// #####################################################
-// # The Assumption is that it's all int based node
-//    each node has int as index, and node doesn't contain any more
-//    information.
-// #Author: Pranay Agarwal agarwalpranaya@gmail.com
-// #####################################################
+
 class GraphBasic{
   int V;
   int E;
@@ -46,27 +43,31 @@ class GraphBasic{
   }
 
   // print a DFS traversal from source s
-  public void dfs(int s, boolean [] visited){
-    if(visited[s])
+  public void dfs(int s, boolean [] visited, ArrayList<Integer> output){
+    if(visited[s]){
       return;
-    System.out.println(s);
+    }
+    // System.out.println(s);
+    output.add(s);
     visited[s] = true;
     LinkedList<Integer> children = getNeighbors(s);
     for(Integer c : children){
-      if(!visited[c])
-        dfs(c, visited);
+      if(!visited[c]){
+        dfs(c, visited, output);
+      }
     }
   }
 
   // print a BFS traversal from source s
-  public void bfs(int s){
+  public void bfs(int s, ArrayList<Integer> output){
     ArrayList<Integer> bfsList = new ArrayList<>();
     boolean [] visited = new boolean[V];
     bfsList.add(s);
     while(!bfsList.isEmpty()){
       int n = bfsList.remove(0);
       visited[n] = true;
-      System.out.println(n);
+      output.add(n);
+      // System.out.println(n);
       LinkedList<Integer> children = getNeighbors(n);
       for(Integer c : children){
         if(!visited[c]){
@@ -75,31 +76,6 @@ class GraphBasic{
           bfsList.add(c);
         }
       }
-    }
-  }
-
-  public static void main(String argv[]){
-    try {
-      File f = new File("data/graph.txt");
-      Scanner sc = new Scanner(f);
-      int n = sc.nextInt();
-      int e = sc.nextInt();
-      GraphBasic g = new GraphBasic(n);
-      for(int i = 0; i < e; i++){
-        int v = sc.nextInt();
-        int u = sc.nextInt();
-        g.addEdge(u, v);
-      }
-      int s = sc.nextInt();
-      boolean[] visited = new boolean[n];
-      System.out.println("BFS");
-      g.bfs(s);
-      System.out.println("DFS");
-      g.dfs(s, visited);
-
-    }
-    catch (FileNotFoundException e) {
-        e.printStackTrace();
     }
   }
 }
